@@ -1,0 +1,27 @@
+---
+features:
+  - Implements Open vSwitch driver support using the documented
+    Scenario "Classic with Open vSwitch"
+    http://docs.openstack.org/mitaka/networking-guide/scenario-classic-ovs.html
+    Currently for Ubuntu Trusty, openvswitch-* packages are
+    downloaded using the Ubuntu cloud archive repo.
+upgrade:
+  - Removed Variable: neutron_linuxbridge
+    neutron_linuxbridge was a boolean variable used to detect whether
+    or not the neutron_linuxbridge_agent service should be enabled.
+    This functionality has been replaced with an inline boolean
+    service_en: "{{ neutron_plugin_type == 'ml2.lxb' }}"
+    in the neutron_services dictionary.
+  - Removed Variable: neutron_driver_interface
+    neutron_driver_interface was used in various neutron configuration
+    files to specify the use of the BridgeInterfaceDriver while using
+    linux bridge networking.  This value has been moved to the
+    neutron_plugins dictionary for plugin type ml2.lxb
+  - Removed Variable: neutron_driver_firewall
+    neutron_driver_firewall specified the firewall driver in the
+    configuration file linuxbridge_agent.ini.  This value has been
+    moved to the neutron_plugins dictionary for plugin type ml2.lxb.
+  - Removed Variable: neutron_ml2_mechanism_drivers
+    neutron_ml2_mechanism_drivers was used in the configuration file
+    ml2_conf.ini.  The value has been moved to the neutron_plugins
+    dictionary for plugin type ml2.lxb.
